@@ -1319,10 +1319,17 @@
 		<monster name="Frost Dragon" x="-1" y="1" z="7" spawntime="60" />
 		<monster name="War Wolf" x="0" y="4" z="7" spawntime="60" />
 	</monster>
+	<monster centerx="486" centery="268" centerz="7" radius="2">
+		<monster name="Ghoul" x="1" y="1" z="7" spawntime="90" />
+	</monster>
 	<monster centerx="199" centery="269" centerz="7" radius="5">
 		<monster name="War Wolf" x="-2" y="-4" z="7" spawntime="60" />
 		<monster name="Polar Bear" x="1" y="0" z="7" spawntime="60" />
 		<monster name="Frost Dragon" x="3" y="1" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="456" centery="270" centerz="7" radius="2">
+		<monster name="Cyclops" x="-1" y="-2" z="7" spawntime="90" />
+		<monster name="Cyclops" x="2" y="2" z="7" spawntime="90" />
 	</monster>
 	<monster centerx="241" centery="274" centerz="7" radius="5">
 		<monster name="Polar Bear" x="3" y="-4" z="7" spawntime="60" />
@@ -1341,17 +1348,29 @@
 	</monster>
 	<monster centerx="428" centery="276" centerz="7" radius="3">
 		<monster name="Poison Spider" x="-2" y="-3" z="7" spawntime="60" />
-		<monster name="Poison Spider" x="3" y="-1" z="7" spawntime="60" />
-		<monster name="Poison Spider" x="0" y="2" z="7" spawntime="60" />
+		<monster name="Poison Spider" x="3" y="-1" z="7" spawntime="90" />
+	</monster>
+	<monster centerx="470" centery="277" centerz="7" radius="2">
+		<monster name="Demon Skeleton" x="0" y="2" z="7" spawntime="90" />
+	</monster>
+	<monster centerx="485" centery="277" centerz="7" radius="2">
+		<monster name="Skeleton" x="-2" y="-1" z="7" spawntime="90" />
+		<monster name="Skeleton" x="2" y="1" z="7" spawntime="90" />
 	</monster>
 	<monster centerx="210" centery="278" centerz="7" radius="5">
 		<monster name="Frost Dragon" x="3" y="-3" z="7" spawntime="60" />
 		<monster name="Frost Dragon" x="-3" y="3" z="7" spawntime="60" />
 		<monster name="Polar Bear" x="1" y="4" z="7" spawntime="60" />
 	</monster>
-	<monster centerx="452" centery="283" centerz="7" radius="2">
-		<monster name="Tarantula" x="1" y="-2" z="7" spawntime="60" />
-		<monster name="Tarantula" x="-1" y="2" z="7" spawntime="60" />
+	<monster centerx="457" centery="280" centerz="7" radius="3">
+		<monster name="Cyclops" x="1" y="-2" z="7" spawntime="90" />
+		<monster name="Cyclops" x="-2" y="2" z="7" spawntime="90" />
+		<monster name="Cyclops" x="-1" y="2" z="7" spawntime="90" />
+	</monster>
+	<monster centerx="484" centery="283" centerz="7" radius="2">
+		<monster name="Ghoul" x="2" y="-2" z="7" spawntime="90" />
+		<monster name="Skeleton" x="0" y="1" z="7" spawntime="90" />
+		<monster name="Ghoul" x="2" y="2" z="7" spawntime="90" />
 	</monster>
 	<monster centerx="179" centery="286" centerz="7" radius="5">
 		<monster name="Frost Dragon" x="-2" y="-2" z="7" spawntime="60" />
@@ -1360,22 +1379,35 @@
 		<monster name="War Wolf" x="0" y="3" z="7" spawntime="60" />
 		<monster name="Frost Dragon" x="-1" y="4" z="7" spawntime="60" />
 	</monster>
+	<monster centerx="475" centery="288" centerz="7" radius="3">
+		<monster name="Skeleton" x="0" y="-2" z="7" spawntime="90" />
+		<monster name="Demon Skeleton" x="3" y="-2" z="7" spawntime="90" />
+		<monster name="Skeleton" x="-3" y="2" z="7" spawntime="90" />
+		<monster name="Skeleton" x="1" y="3" z="7" spawntime="90" />
+	</monster>
 	<monster centerx="194" centery="289" centerz="7" radius="5">
 		<monster name="War Wolf" x="0" y="0" z="7" spawntime="60" />
 		<monster name="Polar Bear" x="4" y="3" z="7" spawntime="60" />
 	</monster>
-	<monster centerx="447" centery="296" centerz="7" radius="2">
-		<monster name="Snake" x="-1" y="-2" z="7" spawntime="60" />
-		<monster name="Snake" x="2" y="2" z="7" spawntime="60" />
+	<monster centerx="483" centery="290" centerz="7" radius="2">
+		<monster name="Ghoul" x="1" y="1" z="7" spawntime="90" />
+	</monster>
+	<monster centerx="415" centery="291" centerz="7" radius="1">
+		<monster name="Snake" x="1" y="0" z="7" spawntime="90" />
+	</monster>
+	<monster centerx="464" centery="294" centerz="7" radius="2">
+		<monster name="Tarantula" x="-1" y="0" z="7" spawntime="60" />
+		<monster name="Tarantula" x="2" y="0" z="7" spawntime="60" />
+	</monster>
+	<monster centerx="454" centery="295" centerz="7" radius="2">
+		<monster name="Tarantula" x="1" y="-1" z="7" spawntime="90" />
+		<monster name="Tarantula" x="-2" y="0" z="7" spawntime="60" />
 	</monster>
 	<monster centerx="204" centery="297" centerz="7" radius="5">
 		<monster name="Frost Dragon" x="-1" y="-5" z="7" spawntime="60" />
 		<monster name="Frost Dragon" x="-1" y="0" z="7" spawntime="60" />
 		<monster name="Polar Bear" x="3" y="1" z="7" spawntime="60" />
 		<monster name="Polar Bear" x="0" y="5" z="7" spawntime="60" />
-	</monster>
-	<monster centerx="448" centery="302" centerz="7" radius="2">
-		<monster name="Snake" x="0" y="-1" z="7" spawntime="60" />
 	</monster>
 	<monster centerx="170" centery="304" centerz="7" radius="5">
 		<monster name="Frost Dragon" x="0" y="-1" z="7" spawntime="60" />
@@ -6798,7 +6830,7 @@
 		<monster name="Warlock" x="-23" y="6" z="10" spawntime="60" />
 		<monster name="Warlock" x="-1" y="10" z="10" spawntime="60" />
 		<monster name="Elf Arcanist" x="-21" y="13" z="10" spawntime="60" />
-		<monster name="Elf Arcanist" x="1" y="14" z="10" spawntime="60" />
+		<monster name="Elf Arcanist" x="2" y="16" z="10" spawntime="60" />
 		<monster name="Elf Arcanist" x="21" y="16" z="10" spawntime="60" />
 		<monster name="Elf Arcanist" x="-22" y="26" z="10" spawntime="60" />
 		<monster name="Elf Arcanist" x="24" y="27" z="10" spawntime="60" />

@@ -17,6 +17,9 @@
 	<npc centerx="331" centery="455" centerz="5" radius="5">
 		<npc name="Julian" x="0" y="0" z="5" spawntime="60" direction="2" />
 	</npc>
+	<npc centerx="478" centery="279" centerz="6" radius="1">
+		<npc name="Oldrak" x="0" y="0" z="6" spawntime="60" />
+	</npc>
 	<npc centerx="269" centery="316" centerz="6" radius="1">
 		<npc name="Nimral" x="0" y="0" z="6" spawntime="60" />
 	</npc>
