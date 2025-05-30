@@ -167,15 +167,15 @@ void ServicePort::open(uint16_t port) {
 		try {
 			ipAddress = asio::ip::address_v4::from_string(ipString);
 			resolved = true;
-		} catch (const std::exception&) {
+		} catch (const std::exception &) {
 			try {
 				ipAddress = asio::ip::address_v6::from_string(ipString);
 				resolved = true;
-			} catch (const std::exception&) {
+			} catch (const std::exception &) {
 				asio::ip::tcp::resolver resolver(io_service);
 				asio::ip::tcp::resolver::results_type results = resolver.resolve(ipString, std::to_string(port));
 
-				for (const auto& entry : results) {
+				for (const auto &entry : results) {
 					if (entry.endpoint().address().is_v6()) {
 						ipAddress = entry.endpoint().address().to_v6();
 						resolved = true;
@@ -183,7 +183,7 @@ void ServicePort::open(uint16_t port) {
 					}
 				}
 				if (!resolved) {
-					for (const auto& entry : results) {
+					for (const auto &entry : results) {
 						if (entry.endpoint().address().is_v4()) {
 							ipAddress = entry.endpoint().address().to_v4();
 							resolved = true;
@@ -213,7 +213,7 @@ void ServicePort::open(uint16_t port) {
 		acceptor->set_option(asio::ip::tcp::no_delay(true));
 
 		accept();
-	} catch (const std::exception& e) {
+	} catch (const std::exception &e) {
 		g_logger().warn("[ServicePort::open] - Error: {}", e.what());
 
 		pendingStart = true;
