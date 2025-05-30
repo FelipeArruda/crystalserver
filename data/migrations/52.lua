@@ -44,7 +44,7 @@ function onUpdateDatabase()
 	db.query([[
 		ALTER TABLE player_charms
 		ADD CONSTRAINT player_charms_players_fk
-		FOREIGN KEY (player_id) REFERENCES players (id)
+		FOREIGN KEY (player_id) REFERENCES players (id) ON DELETE CASCADE
 	]])
 
 	db.query([[

@@ -573,7 +573,7 @@ CREATE TABLE IF NOT EXISTS `player_charms` (
     `charms` BLOB NULL,
     `tracker list` BLOB NULL,
     CONSTRAINT `player_charms_players_fk`
-        FOREIGN KEY (`player_id`) REFERENCES `players` (`id`)
+        FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 -- Table structure `player_statements`
