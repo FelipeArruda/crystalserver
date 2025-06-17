@@ -588,6 +588,8 @@ void ItemParse::parseSupressDrunk(const std::string &stringValue, pugi::xml_attr
 			conditionType = CONDITION_FIRE;
 		} else if (stringValue == "suppresspoison") {
 			conditionType = CONDITION_POISON;
+		} else if (stringValue == "suppressagony") {
+			conditionType = CONDITION_AGONY;
 		} else if (stringValue == "suppressdrown") {
 			conditionType = CONDITION_DROWN;
 		} else if (stringValue == "suppressphysical") {
@@ -623,6 +625,9 @@ std::tuple<ConditionId_t, ConditionType_t> ItemParse::parseFieldConditions(pugi:
 	} else if (lowerStringValue == "physical") {
 		conditionType = CONDITION_BLEEDING;
 		return std::make_tuple(conditionId, conditionType);
+	} else if (lowerStringValue == "agony") {
+		conditionType = CONDITION_AGONY;
+		return std::make_tuple(conditionId, conditionType);
 	} else {
 		g_logger().warn("[Items::parseItemNode] Unknown field value {}", valueAttribute.as_string());
 	}
@@ -641,6 +646,8 @@ CombatType_t ItemParse::parseFieldCombatType(pugi::xml_attribute valueAttribute)
 		return COMBAT_DROWNDAMAGE;
 	} else if (lowerStringValue == "physical") {
 		return COMBAT_PHYSICALDAMAGE;
+	} else if (lowerStringValue == "agony") {
+		return COMBAT_AGONYDAMAGE;
 	} else {
 		g_logger().warn("[Items::parseItemNode] Unknown field value {}", valueAttribute.as_string());
 	}

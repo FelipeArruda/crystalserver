@@ -125,6 +125,7 @@ enum ConditionType_t : uint8_t {
 	CONDITION_BAKRAGORE = 34,
 	CONDITION_GOSHNARTAINT = 35,
 	CONDITION_POWERLESS = 36,
+	CONDITION_AGONY = 37,
 
 	// Need the last ever
 	CONDITION_COUNT
@@ -141,6 +142,7 @@ constexpr bool IsConditionSuppressible(ConditionType_t condition) {
 		CONDITION_DROWN,
 		CONDITION_FREEZING,
 		CONDITION_CURSED,
+		CONDITION_AGONY,
 	};
 
 	return std::ranges::any_of(suppressibleConditions, [condition](const auto &suppressibleCondition) {

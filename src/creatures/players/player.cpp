@@ -6059,7 +6059,8 @@ void Player::onCleanseCondition(ConditionType_t type) const {
 		{ CONDITION_BLEEDING, "bleeding" },
 		{ CONDITION_PARALYZE, "paralyzed" },
 		{ CONDITION_ROOTED, "rooted" },
-		{ CONDITION_FEARED, "feared" }
+		{ CONDITION_FEARED, "feared" },
+		{ CONDITION_AGONY, "agonyed" },
 	};
 
 	auto it = conditionMessages.find(type);
@@ -6075,6 +6076,10 @@ void Player::onAddCombatCondition(ConditionType_t type) {
 	switch (type) {
 		case CONDITION_POISON:
 			sendTextMessage(MESSAGE_FAILURE, "You are poisoned.");
+			break;
+
+		case CONDITION_AGONY:
+			sendTextMessage(MESSAGE_FAILURE, "You are agonyed.");
 			break;
 
 		case CONDITION_DROWN:
@@ -11163,6 +11168,7 @@ bool Player::hasPermittedConditionInPZ() const {
 		CONDITION_ENERGY,
 		CONDITION_FIRE,
 		CONDITION_POISON,
+		CONDITION_AGONY,
 		CONDITION_BLEEDING,
 		CONDITION_CURSED,
 		CONDITION_DAZZLED
