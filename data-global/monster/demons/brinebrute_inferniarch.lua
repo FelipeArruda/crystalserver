@@ -85,7 +85,7 @@ monster.loot = {
 	{ name = "Blue Crystal Shard", chance = 12500, maxCount = 2 },
 	{ name = "Green Crystal Shard", chance = 13500, maxCount = 2 },
 	{ name = "Violet Crystal Shard", chance = 12500, maxCount = 2 },
-	{ name = "Small Sapphire", chance = 12500, maxCount = 2 },
+	{ name = "Small Sapphire", chance = 12500, maxCount = 2 }, 
 	{ name = "Blue Crystal Splinter", chance = 14500, maxCount = 2 },
 	{ name = "Green Crystal Splinter", chance = 14500, maxCount = 2 },
 	{ name = "Brown Crystal Splinter", chance = 14500, maxCount = 2 },
@@ -93,14 +93,14 @@ monster.loot = {
 	{ name = "Ultimate Health Potion", chance = 5500, maxCount = 10 },
 	{ name = "Demonic Core Essence", chance = 1500, maxCount = 1 },
 	{ name = "Demonic Matter", chance = 1500, maxCount = 1 },
-	{ name = "Bloodstained Scythe", chance = 2500, maxCount = 1 },
+	{ name = "Bloodstained Scythe", chance = 2500, maxCount = 1 }, 
 	{ name = "Giant Sword", chance = 4000, maxCount = 1 },
 	{ name = "Green Gem", chance = 3000, maxCount = 1 },
 	{ name = "Might ring", chance = 1000, maxCount = 1 },
 	{ id = 3100, chance = 5000, maxCount = 1 }, -- Ring of Healing
 	{ name = "Mummified Demon Finger", chance = 500, maxCount = 1 },
 	{ name = "Gold Ring", chance = 500, maxCount = 1 },
-	--{ name = "brinebrute inferniarch soul core", chance = 100, maxCount = 1 },
+	{ name = "brinebrute inferniarch soul core", chance = 100, maxCount = 1 },
 }
 
 monster.attacks = {
