@@ -182,6 +182,6 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 
 	Webhook.sendMessage(":skull_crossbones: " .. player:getMarkdownLink() .. " has died. Killed at level _" .. player:getLevel() .. "_ by **" .. killerName .. "**.", announcementChannels["player-kills"])
 	handleGuildWar(player, killer, mostDamageKiller, killerName, mostDamageName)
+	player:teleportTo(player:getTown():getTemplePosition())
 end
-
 playerDeath:register()
