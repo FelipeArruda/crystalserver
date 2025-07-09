@@ -9148,16 +9148,19 @@ void Game::playerBrowseMarketOwnHistory(uint32_t playerId) {
 namespace {
 	bool removeOfferItems(const std::shared_ptr<Player> &player, const std::shared_ptr<DepotLocker> &depotLocker, const ItemType &itemType, uint16_t amount, uint8_t tier, std::ostringstream &offerStatus) {
 		uint16_t removeAmount = amount;
-		if (tier == 0) {
-			if (const auto stashItemCount = player->getStashItemCount(itemType.wareId); stashItemCount > 0) {
-				if (removeAmount > stashItemCount && player->withdrawItem(itemType.wareId, stashItemCount)) {
-					removeAmount -= stashItemCount;
-				} else if (player->withdrawItem(itemType.wareId, removeAmount)) {
-					removeAmount = 0;
-				} else {
-					offerStatus << "Failed to remove stash items from player " << player->getName();
-					return false;
-				}
+		if (
+			// Init-statement
+			auto stashItemCount = player->getStashItemCount(itemType.wareId);
+			// Condition
+			stashItemCount > 0
+		) {
+			if (removeAmount > stashItemCount && player->withdrawItem(itemType.wareId, stashItemCount)) {
+				removeAmount -= stashItemCount;
+			} else if (player->withdrawItem(itemType.wareId, removeAmount)) {
+				removeAmount = 0;
+			} else {
+				offerStatus << "Failed to remove stash items from player " << player->getName();
+				return false;
 			}
 		}
 
@@ -9168,37 +9171,47 @@ namespace {
 				return false;
 			}
 
-			uint32_t removedCount = 0;
+			uint32_t count = 0;
 			for (const auto &item : itemVector) {
 				if (!item) {
 					continue;
 				}
 
-				if (removedCount >= removeAmount) {
-					break;
+				if (itemType.stackable) {
+					uint16_t removeCount = std::min<uint16_t>(removeAmount, item->getItemCount());
+					removeAmount -= removeCount;
+					if (
+						// Init-statement
+						auto ret = g_game().internalRemoveItem(item, removeCount);
+						// Condition
+						ret != RETURNVALUE_NOERROR
+					) {
+						offerStatus << "Failed to remove items from player " << player->getName() << " error: " << getReturnMessage(ret);
+						return false;
+					}
+
+					if (removeAmount == 0) {
+						break;
+					}
+				} else {
+					count += Item::countByType(item, -1);
+					if (count > amount) {
+						break;
+					}
+					auto ret = g_game().internalRemoveItem(item);
+					if (ret != RETURNVALUE_NOERROR) {
+						offerStatus << "Failed to remove items from player " << player->getName() << " error: " << getReturnMessage(ret);
+						return false;
+					} else {
+						removeAmount -= 1;
+					}
 				}
-
-				uint16_t thisRemove = std::min<uint16_t>(
-					removeAmount - removedCount,
-					item->getItemCount()
-				);
-
-				ReturnValue ret = player->removeItem(item, thisRemove);
-				if (ret != RETURNVALUE_NOERROR) {
-					offerStatus << "Failed to remove: " << amount << " items of id: " << itemType.id << " from player " << player->getName() << " error: " << getReturnMessage(ret);
-					return false;
-				}
-
-				removedCount += thisRemove;
 			}
-
-			player->updateState();
-
-			if (removedCount < removeAmount) {
-				g_logger().error("Player {} tried to sell an item {} without this item", player->getName(), itemType.id);
-				offerStatus << "The item you tried to market is not correct. Check the item again.";
-				return false;
-			}
+		}
+		if (removeAmount > 0) {
+			g_logger().error("Player {} tried to sell an item {} without this item", itemType.id, player->getName());
+			offerStatus << "The item you tried to market is not correct. Check the item again.";
+			return false;
 		}
 		return true;
 	}
