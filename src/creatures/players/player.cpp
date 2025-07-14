@@ -7846,13 +7846,16 @@ bool Player::hasMount(const std::shared_ptr<Mount> &mount) const {
 }
 
 void Player::dismount() {
-	const auto &mount = g_game().mounts->getMountByID(getCurrentMount());
+	const auto& mount = g_game().mounts->getMountByID(getCurrentMount());
+
 	if (mount && mount->speed > 0) {
 		g_game().changeSpeed(static_self_cast<Player>(), -mount->speed);
 	}
 
-	if (mountAttributes) {
+	if (mountAttributes && mount) {
 		mountAttributes = !g_game().mounts->removeAttributes(getID(), mount->id);
+	} else {
+		mountAttributes = false;
 	}
 
 	defaultOutfit.lookMount = 0;
