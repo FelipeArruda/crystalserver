@@ -785,20 +785,29 @@ bool Npc::getNextStep(Direction &nextDirection, uint32_t &flags) {
 }
 
 bool Npc::getRandomStep(Direction &moveDirection) {
-	static std::vector<Direction> directionvector {
-		Direction::DIRECTION_NORTH,
-		Direction::DIRECTION_WEST,
-		Direction::DIRECTION_EAST,
-		Direction::DIRECTION_SOUTH
-	};
-	std::ranges::shuffle(directionvector, getRandomGenerator());
+	std::array<Direction, 4> dirList;
+	size_t directions = static_cast<size_t>(-1);
 
-	for (const Position &creaturePos = getPosition();
-	     const Direction &direction : directionvector) {
-		if (canWalkTo(creaturePos, direction)) {
-			moveDirection = direction;
-			return true;
-		}
+	const Position &creaturePos = getPosition();
+	if (canWalkTo(creaturePos, Direction::DIRECTION_NORTH)) {
+		dirList[++directions] = Direction::DIRECTION_NORTH;
+	}
+
+	if (canWalkTo(creaturePos, Direction::DIRECTION_SOUTH)) {
+		dirList[++directions] = Direction::DIRECTION_SOUTH;
+	}
+
+	if (canWalkTo(creaturePos, Direction::DIRECTION_EAST)) {
+		dirList[++directions] = Direction::DIRECTION_EAST;
+	}
+
+	if (canWalkTo(creaturePos, Direction::DIRECTION_WEST)) {
+		dirList[++directions] = Direction::DIRECTION_WEST;
+	}
+
+	if (directions <= 4) {
+		moveDirection = dirList[uniform_random(0, directions)];
+		return true;
 	}
 	return false;
 }
