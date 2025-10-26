@@ -8387,12 +8387,13 @@ void Game::checkImbuementsAndSereneStatus() {
 		}
 
 		const auto &party = mapPlayer->getParty();
-		if (party) {
-			mapPlayer->setSerene(isPlayerNoBoxed(mapPlayer));
-			continue;
-		}
+		bool hasNearbyPartyMembers = party ? hasPartyMembersNearby(mapPlayer) : false;
+		bool hasLessThanSixMonsters = isPlayerNoBoxed(mapPlayer);
 
-		mapPlayer->setSerene(true);
+		bool condition1 = !party || !hasNearbyPartyMembers;
+		bool condition2 = hasLessThanSixMonsters;
+
+		mapPlayer->setSerene(condition1 && condition2);
 	}
 }
 
@@ -11731,6 +11732,45 @@ void Game::createIllusion(const std::shared_ptr<Player> &player, const Outfit_t 
 	player->addCondition(outfitCondition);
 }
 
+bool Game::hasPartyMembersNearby(const std::shared_ptr<Player> &player) {
+	if (!player) {
+		return false;
+	}
+
+	const auto &party = player->getParty();
+	if (!party) {
+		return false;
+	}
+
+	const Position &centerPos = player->getPosition();
+	for (int offsetX = -3; offsetX <= 3; ++offsetX) {
+		for (int offsetY = -3; offsetY <= 3; ++offsetY) {
+			if (offsetX == 0 && offsetY == 0) {
+				continue;
+			}
+
+			const auto &tile = g_game().map.getTile(static_cast<uint16_t>(centerPos.x + offsetX), static_cast<uint16_t>(centerPos.y + offsetY), centerPos.z);
+			if (!tile) {
+				continue;
+			}
+
+			const auto &topCreature = tile->getTopCreature();
+			if (!topCreature) {
+				continue;
+			}
+
+			const auto &nearbyPlayer = topCreature->getPlayer();
+			if (nearbyPlayer && nearbyPlayer != player) {
+				if (nearbyPlayer->getParty() == party) {
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
 bool Game::isPlayerNoBoxed(const std::shared_ptr<Player> &player) {
 	if (!player) {
 		return true;
@@ -11756,6 +11796,11 @@ bool Game::isPlayerNoBoxed(const std::shared_ptr<Player> &player) {
 			}
 
 			if (topCreature->getMaster() && topCreature->getMaster()->getPlayer() == player) {
+				continue;
+			}
+
+			// Ignore other players (including party members)
+			if (topCreature->getPlayer()) {
 				continue;
 			}
 
