@@ -1115,6 +1115,12 @@ public:
 	void setNextPotionAction(int64_t time);
 	bool canDoPotionAction() const;
 
+	void setNextNecklaceAction(int64_t time);
+	bool canEquipNecklace() const;
+
+	void setNextRingAction(int64_t time);
+	bool canEquipRing() const;
+
 	void setNextExAction(int64_t time);
 	bool canDoExAction() const;
 
@@ -1680,6 +1686,8 @@ private:
 	int64_t nextExAction = 0;
 	int64_t nextImbuementAction = 0;
 	int64_t nextPotionAction = 0;
+	int64_t nextNecklaceAction = 0;
+	int64_t nextRingAction = 0;
 	int64_t nextMarketAction = 0;
 	int64_t lastQuickLootNotification = 0;
 	int64_t lastWalking = 0;
