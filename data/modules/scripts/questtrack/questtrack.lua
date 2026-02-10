@@ -1,7 +1,21 @@
 function onRecvbyte(player, msg, byte)
 	if byte == 0xD0 then
+		local function getRemainingBytes()
+			return msg:getLength() - (msg:getBufferPosition() - 7)
+		end
+
+		if getRemainingBytes() < 3 then
+			return
+		end
+
 		local quests = {}
 		local missions = msg:getByte()
+
+		local requiredBytes = (missions * 2) + 2
+		if getRemainingBytes() < requiredBytes then
+			return
+		end
+
 		for i = 1, missions do
 			quests[#quests + 1] = msg:getU16()
 		end
