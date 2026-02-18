@@ -84024,6 +84024,7 @@
 		<attribute key="description" value="The traditional robe of a Merudri monk" />
 		<attribute key="primarytype" value="armors" />
 		<attribute key="armor" value="7" />
+		<attribute key="mantra" value="7" />
 		<attribute key="skillfist" value="1" />
 		<attribute key="weight" value="7000" />
 		<attribute key="script" value="moveevent">
@@ -84336,6 +84337,11 @@
 			<attribute key="mana leech" value="3" />
 			<attribute key="critical hit" value="3" />
 			<attribute key="skillboost fist" value="3" />
+		</attribute>
+		<attribute key="augments" value="1">
+			<attribute key="greater tiger clash" value="base">
+				<attribute key="value" value="1200" />
+			</attribute>
 		</attribute>
 		<attribute key="weight" value="2900" />
 		<attribute key="script" value="moveevent;weapon">
