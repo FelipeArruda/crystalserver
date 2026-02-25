@@ -10808,7 +10808,6 @@
 	</item>
 	<item id="3454" article="a" name="broom">
 		<attribute key="primarytype" value="tools" />
-		<attribute key="description" value="Don't use it without flying license. Not suitable for minors." />
 		<attribute key="weight" value="1100" />
 	</item>
 	<item id="3455" article="a" name="hoe">
