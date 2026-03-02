@@ -7916,7 +7916,7 @@
 		<attribute key="charges" value="1" />
 		<attribute key="weight" value="210" />
 	</item>
-	<item id="3204" article="a" name="dead human" />
+	<item id="3204" name="your own dead body" />
 	<item id="3205" article="a" name="family brooch">
 		<attribute key="primarytype" value="quest items" />
 		<attribute key="description" value="You see the familyname Windtrouser engraved on this brooch" />
