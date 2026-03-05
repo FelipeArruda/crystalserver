@@ -75050,6 +75050,17 @@
 	<item id="43134" name="stairs">
 		<attribute key="floorchange" value="south" />
 	</item>
+	<item fromid="43786" toid="43790" name="spore reservoir"/>
+	<item id="43294" article="a" name="spore tracks" >
+		<attribute key="primarytype" value="magicfield"/>
+		<attribute key="duration" value="3"/>
+		<attribute key="decayTo" value="43295"/>
+	</item>
+	<item id="43295" article="a" name="volatile funghi" >
+		<attribute key="primarytype" value="magicfield"/>
+		<attribute key="duration" value="3"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
 	<item id="43297" article="a" name="agony field">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
