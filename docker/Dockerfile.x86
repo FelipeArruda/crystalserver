@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends cmake git \
 
 WORKDIR /opt
 COPY vcpkg.json /opt
-RUN vcpkgCommitId=$(grep '.builtin-baseline' vcpkg.json | awk -F: '{print $2}' | tr -d '," ') \
+RUN vcpkgCommitId=$(sed -n 's/.*"builtin-baseline":[[:space:]]*"\([^"]*\)".*/\1/p' vcpkg.json | tr -d '\r\n') \
 	&& echo "vcpkg commit ID: $vcpkgCommitId" \
 	&& git clone https://github.com/Microsoft/vcpkg.git \
 	&& cd vcpkg \
+	&& test -n "$vcpkgCommitId" \
 	&& git checkout $vcpkgCommitId \
 	&& ./bootstrap-vcpkg.sh
 
@@ -43,12 +44,20 @@ COPY config.lua.dist /crystalserver/config.lua
 WORKDIR /crystalserver
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	mariadb-client curl \
+	mariadb-client curl p7zip-full \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY docker/data/01-test_account.sql 01-test_account.sql
 COPY docker/data/02-test_account_players.sql 02-test_account_players.sql
 COPY docker/data/start.sh start.sh
+RUN sed -i 's/\r$//' start.sh && chmod +x start.sh
+RUN if [ -f /crystalserver/data-global/world/world.7z ] && [ ! -f /crystalserver/data-global/world/world.otbm ]; then \
+		7z x -y /crystalserver/data-global/world/world.7z -o/crystalserver/data-global/world/; \
+	fi
+RUN useradd -r -m -d /home/crystal -s /usr/sbin/nologin crystal \
+	&& mkdir -p /data \
+	&& chown -R crystal:crystal /crystalserver /data
 
+USER crystal
 ENTRYPOINT ["/crystalserver/start.sh"]
