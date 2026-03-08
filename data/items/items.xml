@@ -4344,65 +4344,38 @@
 		</attribute>
 	</item>
 	<item id="2131" article="a" name="fire field">
+		<attribute key="primarytype" value="fields" />
 		<attribute key="type" value="magicfield" />
-		<attribute key="field" value="fire">
-			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="7" />
-			<attribute key="damage" value="20" />
-		</attribute>
+		<attribute key="field" value="fire" />
 		<attribute key="duration" value="120" />
 		<attribute key="decayTo" value="2132" />
-		<attribute key="script" value="moveevent">
-			<attribute key="eventType" value="stepin" />
-		</attribute>
 	</item>
 	<item id="2132" article="a" name="fire field">
+		<attribute key="primarytype" value="fields" />
 		<attribute key="type" value="magicfield" />
-		<attribute key="field" value="fire">
-			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="7" />
-			<attribute key="damage" value="10" />
-		</attribute>
+		<attribute key="field" value="fire" />
 		<attribute key="duration" value="120" />
 		<attribute key="decayTo" value="2133" />
-		<attribute key="script" value="moveevent">
-			<attribute key="eventType" value="stepin" />
-		</attribute>
 	</item>
 	<item id="2133" article="a" name="fire field">
+		<attribute key="primarytype" value="fields" />
 		<attribute key="type" value="magicfield" />
 		<attribute key="field" value="fire" />
 		<attribute key="duration" value="120" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="script" value="moveevent">
-			<attribute key="eventType" value="stepin" />
-		</attribute>
 	</item>
 	<item id="2134" article="a" name="poison gas">
 		<attribute key="primarytype" value="fields" />
 		<attribute key="type" value="magicfield" />
-		<attribute key="field" value="poison">
-			<attribute key="ticks" value="5000" />
-			<attribute key="damage" value="100" />
-			<attribute key="start" value="5" />
-		</attribute>
+		<attribute key="field" value="poison"/>
 		<attribute key="duration" value="120" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="script" value="moveevent">
-			<attribute key="eventType" value="stepin" />
-		</attribute>
 	</item>
 	<item id="2135" article="an" name="energy field">
+		<attribute key="primarytype" value="fields" />
 		<attribute key="type" value="magicfield" />
-		<attribute key="field" value="energy">
-			<attribute key="ticks" value="10000" />
-			<attribute key="damage" value="25" />
-		</attribute>
 		<attribute key="duration" value="120" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="script" value="moveevent">
-			<attribute key="eventType" value="stepin" />
-		</attribute>
 	</item>
 	<item id="2136" name="smoke">
 		<attribute key="primarytype" value="fields" />
@@ -42688,26 +42661,10 @@
 		<attribute key="decayTo" value="0" />
 	</item>
 	<item fromid="21458" toid="21461" name="RESERVED SPRITE" />
-	<item id="21462" article="a" name="fire field" />
-	<item id="21463" article="a" name="magic field" />
-	<item id="21464" article="a" name="flame of life">
-		<attribute key="showduration" value="1" />
-		<attribute key="duration" value="600" />
-		<attribute key="decayTo" value="7359" />
-	</item>
-	<item id="21465" article="a" name="fire field">
-		<attribute key="type" value="magicfield" />
-		<attribute key="field" value="fire">
-			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="7" />
-			<attribute key="damage" value="10" />
-		</attribute>
-		<attribute key="duration" value="120" />
-		<attribute key="decayTo" value="2132" />
-		<attribute key="script" value="moveevent">
-			<attribute key="eventType" value="stepin" />
-		</attribute>
-	</item>
+	<item id="21462" article="a" name="red flame" />
+	<item id="21463" article="a" name="blue flame" />
+	<item id="21464" article="a" name="violet flame"/>
+	<item id="21465" article="a" name="yellow flame" />
 	<item id="21466" name="ewer with holy water">
 		<attribute key="description" value="The water in the ewer shimmers faintly. In the desert's heat it will evaporate soon, however" />
 		<attribute key="weight" value="1750" />
