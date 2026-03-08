@@ -5,10 +5,10 @@
 - Execute the script root directory /docker/data/download-myaac.sh
 - To use global ip change the login.py on world to use that ip and
 also change in config.lua.dist
-- Client pointing to http://<ip>:8080/login.php
+- Client pointing to http://<ip>/login.php
 
 ### Default Values (docker-compose.yml)
-- Ports: 7171, 7172, 80(web), 3306, 8080(login)
+- Ports: 7171, 7172, 80(web/login), 3306
 - Database Server: database
 - Database Name/User/Password: otserver
 
