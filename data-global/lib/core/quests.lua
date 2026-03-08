@@ -5649,8 +5649,8 @@ if not Quests then
 					endValue = 3,
 					states = {
 						[1] = "Mr Morris tasked you to find an ancient amulet that was lost somewhere on Dawnport - probably next to a corpse somewhere.",
-						[2] = "Come back to Mr Morris.",
-						[3] = "Mr Morris thanks for you the help.",
+						[2] = "Deliver the ancient amulet back to Mr Morris.",
+						[3] = "You returned the lost amulet to Mr Morris and received your reward.",
 					},
 				},
 				[3] = {
@@ -5661,7 +5661,7 @@ if not Quests then
 					endValue = 2,
 					states = {
 						[1] = "Mr Morris urged you to find a log book that was stolen by trolls.",
-						[2] = "Mr Morris thanks you for the help.",
+						[2] = "You got the log book back from the troll caves and received a reward for your efforts.",
 					},
 				},
 				[4] = {
@@ -5672,8 +5672,8 @@ if not Quests then
 					endValue = 3,
 					states = {
 						[1] = "Mr Morris needs the rare Dawnfire herb harvested and brought to him. It grows on gray sand only, he said.",
-						[2] = "Come back to Mr Morris.",
-						[3] = "Mr Morris thanks you for the help.",
+						[2] = "You harvested a sample of the rare Dawnfire herb. Bring the sample to Mr Morris.",
+						[3] = "You managed to find the rare Dawnfire herb and were rewarded by Mr Morris. Nice job!",
 					},
 				},
 				[5] = {
@@ -5684,10 +5684,10 @@ if not Quests then
 					endValue = 5,
 					states = {
 						[1] = "The key to the adventurer's dormitory has disappeared. Maybe you can find it. Ask around to find out who was the last to have seen it.",
-						[2] = "Use the fishing rod in the nearby lake to fish Old Nasty.",
-						[3] = "Come back to Woblin with Old Nasty",
-						[4] = "Come back to Mr Morris with Key 0010",
-						[5] = "Mr Morris thanks for the help",
+						[2] = "Use a fishing rod in the pond to catch Old Nasty, you also requiere worms to use as bait.",
+						[3] = "You did it! You caught Old Nasty, you should inform Woblin about your catch.",
+						[4] = "Woblin was pleased about your catch his arch enemy Old Nasty. He gave you the lost adventurer's dormitory key as reward, hurry and delivery the key back to Mr Morris.",
+						[5] = "You found the key to the adventurers' dormitory and received a little reward on top of the thanks of everyone.",
 					},
 				},
 				[6] = {
