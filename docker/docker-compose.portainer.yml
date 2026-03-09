@@ -42,7 +42,9 @@ services:
         condition: service_started
 
   login:
-    image: felipearruda/crystalserver-login:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.login
     restart: unless-stopped
     environment:
       MYSQL_HOST: database
@@ -56,8 +58,6 @@ services:
       SERVER_LOCATION: "${SERVER_LOCATION:-BRA}"
       RATE_LIMITER_RATE: "${RATE_LIMITER_RATE:-2}"
       RATE_LIMITER_BURST: "${RATE_LIMITER_BURST:-5}"
-    volumes:
-      - "../config.lua.dist:/config.lua:ro"
     ports:
       - "${LOGIN_HTTP_PORT:-80}:80"
       - "${LOGIN_GRPC_PORT:-9090}:9090"

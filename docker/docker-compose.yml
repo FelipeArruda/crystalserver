@@ -42,15 +42,15 @@ services:
         condition: service_started
 
   login:
-    image: crystalserver/login-server:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.login
     restart: unless-stopped
     ports:
       - '$LOGIN_HTTP_PORT:$LOGIN_HTTP_PORT'
       - '$LOGIN_GRPC_PORT:$LOGIN_GRPC_PORT'
     env_file:
       - '.env'
-    volumes:
-      - '../config.lua.dist:/config.lua:ro'
     networks:
       - crystalserver-net
     depends_on:
