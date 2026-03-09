@@ -26,16 +26,8 @@ on:
       - "vcpkg.json"
 
 jobs:
-  build-images:
+  build-otserver:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: otserver
-            dockerfile: docker/Dockerfile.x86
-          - name: login
-            dockerfile: docker/Dockerfile.login
 
     steps:
       - name: Checkout
@@ -44,12 +36,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build ${{ matrix.name }} image
+      - name: Build otserver image
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ${{ matrix.dockerfile }}
+          file: docker/Dockerfile.x86
           push: false
-          tags: crystalserver/${{ matrix.name }}:ci-${{ github.sha }}
-          cache-from: type=gha,scope=${{ matrix.name }}
-          cache-to: type=gha,scope=${{ matrix.name }},mode=max
+          tags: crystalserver/otserver:ci-${{ github.sha }}
+          cache-from: type=gha,scope=otserver
+          cache-to: type=gha,scope=otserver,mode=max
+
+  validate-login-dockerfile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validate login Dockerfile
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.login
+          push: false
+          tags: crystalserver/login-validate:ci-${{ github.sha }}
