@@ -47,6 +47,8 @@ services:
       - '$LOGIN_GRPC_PORT:$LOGIN_GRPC_PORT'
     env_file:
       - '.env'
+    volumes:
+      - '../config.lua.dist:/config.lua:ro'
     networks:
       - crystalserver-net
     depends_on:

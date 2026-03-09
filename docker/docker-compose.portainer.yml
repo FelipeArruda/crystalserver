@@ -5,7 +5,7 @@ services:
     image: mariadb:11
     restart: unless-stopped
     env_file:
-      - .env.dist
+      - .env
     volumes:
       - db-volume:/var/lib/mysql
     healthcheck:
@@ -15,12 +15,10 @@ services:
       retries: 10
 
   otserver:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.x86
+    image: felipearruda/crystalserver:latest
     restart: unless-stopped
     env_file:
-      - .env.dist
+      - .env
     environment:
       OT_DB_HOST: database
       OT_DB_PORT: 3306
@@ -41,12 +39,10 @@ services:
         condition: service_healthy
 
   login:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.login
+    image: felipearruda/crystalserver-login:latest
     restart: unless-stopped
     env_file:
-      - .env.dist
+      - .env
     environment:
       MYSQL_HOST: database
       MYSQL_PORT: 3306

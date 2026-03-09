@@ -12,6 +12,7 @@ FROM alpine:3.21
 RUN apk add --no-cache ca-certificates tzdata
 
 COPY --from=build /out/login-server /bin/login-server
+COPY config.lua.dist /config.lua
 
 EXPOSE 80 9090
 ENTRYPOINT ["/bin/login-server"]
