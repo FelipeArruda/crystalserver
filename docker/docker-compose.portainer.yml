@@ -4,8 +4,11 @@ services:
   database:
     image: mariadb:11
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     volumes:
       - db-volume:/var/lib/mysql
     healthcheck:
@@ -17,8 +20,6 @@ services:
   otserver:
     image: felipearruda/crystalserver:latest
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
       OT_DB_HOST: database
       OT_DB_PORT: 3306
@@ -37,12 +38,12 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      login:
+        condition: service_started
 
   login:
     image: felipearruda/crystalserver-login:latest
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
       MYSQL_HOST: database
       MYSQL_PORT: 3306
@@ -63,8 +64,6 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      otserver:
-        condition: service_started
 
 volumes:
   db-volume:

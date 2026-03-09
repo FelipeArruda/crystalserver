@@ -38,6 +38,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      login:
+        condition: service_started
 
   login:
     image: crystalserver/login-server:latest
