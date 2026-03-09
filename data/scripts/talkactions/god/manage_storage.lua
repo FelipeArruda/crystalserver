@@ -25,8 +25,13 @@ function Player.getStorageValueTalkaction(self, param)
 		return true
 	end
 
-	-- Get the storage key
-	local storageValue = target:getStorageValue(storageKey)
+	-- Numeric storage keys use legacy storage; named keys use KV.
+	local storageValue
+	if type(storageKey) == "number" then
+		storageValue = target:getStorageValue(storageKey)
+	else
+		storageValue = target:kv():get(storageKey)
+	end
 	if storageValue == nil then
 		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The storage with id: " .. split[2] .. " does not exist or is not set for player " .. target:getName() .. ".")
 	else
@@ -58,14 +63,14 @@ function Player.setStorageValueTalkaction(self, param)
 	local split = param:split(",")
 	local value = 1
 	if split[2] then
-		value = split[2]
+		value = tonumber(split[2]) or split[2]
 	end
 
 	-- Try to convert the first parameter to a number. If it's not a number, treat it as a storage name
 	local storageKey = tonumber(split[1])
 	if storageKey == nil then
 		storageKey = split[1]
-		-- The key is a name, so call setStorageValueByName instead of setStorageValue
+		-- The key is a name, so use KV instead of deprecated by-name storage.
 		if split[3] then
 			local targetPlayer = Player(string.trim(split[3]))
 			if not targetPlayer then
@@ -74,14 +79,14 @@ function Player.setStorageValueTalkaction(self, param)
 			else
 				local message = "Set storage: " .. storageKey .. " to player " .. split[3] .. " newValue: " .. value .. "."
 				self:sendTextMessage(MESSAGE_EVENT_ADVANCE, message)
-				targetPlayer:setStorageValueByName(storageKey, value)
+				targetPlayer:kv():set(storageKey, value)
 				targetPlayer:save()
 				return true
 			end
 		else
 			local message = "Set storage: " .. storageKey .. " to player " .. self:getName() .. ", newValue: " .. value .. "."
 			self:sendTextMessage(MESSAGE_EVENT_ADVANCE, message)
-			self:setStorageValueByName(split[1], value)
+			self:kv():set(split[1], value)
 			self:save()
 		end
 	else
