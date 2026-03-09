@@ -671,10 +671,10 @@ discordWebhookDelayMs = 1000
 -- 		If you use 'vipFamiliarTimeCooldownReduction' greater than half of 'familiarTime', it will get the highest possible value, in this case 15
 -- NOTE: GainCoin function, please configure script: data-global/scripts/globalevents/vip/online_coins.lua
 -- NOTE: GainToken function, please configure script: data-global/scripts/globalevents/vip/online_tokens.lua
-vipSystemEnabled = false
-vipBonusExp = 0
-vipBonusLoot = 0
-vipBonusSkill = 0
+vipSystemEnabled = true
+vipBonusExp = 3
+vipBonusLoot = 1
+vipBonusSkill = 1
 vipAutoLootVipOnly = false
 vipStayOnline = false
 vipFamiliarTimeCooldownReduction = 0

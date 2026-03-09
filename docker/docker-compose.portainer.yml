@@ -5,7 +5,7 @@ services:
     image: mariadb:11
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.dist
     volumes:
       - db-volume:/var/lib/mysql
     healthcheck:
@@ -20,7 +20,7 @@ services:
       dockerfile: docker/Dockerfile.x86
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.dist
     environment:
       OT_DB_HOST: database
       OT_DB_PORT: 3306
@@ -46,7 +46,7 @@ services:
       dockerfile: docker/Dockerfile.login
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.dist
     environment:
       MYSQL_HOST: database
       MYSQL_PORT: 3306
