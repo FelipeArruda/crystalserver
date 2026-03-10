@@ -9,7 +9,7 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 
 ## Pre-requisitos
 - Host Ubuntu 24.04 com Docker e Portainer instalados.
-- Portas liberadas: `7171`, `7172`, `80` e `9090`.
+- Portas liberadas: `7171`, `7172` e `80` (ou a porta definida em `MYAAC_HTTP_PORT`).
 
 ## Passo a passo (Portainer)
 1. No repositorio, copie o arquivo de ambiente:
@@ -21,6 +21,7 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
    - `MYSQL_PASSWORD`
    - `MYSQL_ROOT_PASSWORD`
    - `SERVER_IP` (`auto` ou IP publico fixo)
+   - `MYAAC_INSTALL_ALLOWED_IPS` com o IP publico que podera abrir `/install`
 3. Abra o Portainer.
 4. Va em `Stacks` -> `Add stack`.
 5. Selecione `Repository` (Git) e informe:
@@ -33,23 +34,28 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 - O servico `otserver` faz build da imagem com `docker/Dockerfile.x86`.
 - O banco `mariadb` sobe primeiro.
 - O `start.sh` do servidor cria/importa schema automaticamente se necessario.
+- O servico `myaac` baixa a release configurada em `MYAAC_VERSION` e publica a AAC em Apache/PHP.
+- O `otserver` compartilha `config.lua` e datapack em um volume acessivel pelo MyAAC em `/var/www/server`.
 - O processo do servidor roda com usuario nao-root dentro do container.
 
 ## Seguranca padrao desta stack
 - A porta do banco (`3306`) nao e publicada no host por padrao.
 - O MariaDB fica acessivel apenas pela rede interna do compose.
 
-## Login server (opcional)
-- O servico `login` esta marcado com profile `with-login`.
-- A imagem `crystalserver/login-server:latest` pode nao estar publica no registry.
-- Deploy padrao (sem login-server):
-  ```bash
-  docker compose -f docker/docker-compose.portainer.yml up -d --build
-  ```
-- Deploy com login-server (somente se voce tiver imagem valida):
-  ```bash
-  docker compose --profile with-login -f docker/docker-compose.portainer.yml up -d --build
-  ```
+## MyAAC
+- Por padrao, a stack usa `MYAAC_REF=develop`, que acompanha a linha mais nova do MyAAC.
+- Se quiser fixar uma release estavel 1.x, defina `MYAAC_VERSION` e deixe `MYAAC_REF` sem efeito.
+- A stack expõe o AAC em `http://SEU_HOST:MYAAC_HTTP_PORT/`.
+- Para liberar o instalador, defina `MYAAC_INSTALL_ALLOWED_IPS` com o IP publico do navegador que vai executar a instalacao. Use mais de um IP separado por virgula.
+- Apos o deploy, abra `http://SEU_HOST:MYAAC_HTTP_PORT/install`.
+- O container do AAC sobe com limite de upload PHP em `64M`, suficiente para plugins maiores.
+- Na etapa de configuracao do MyAAC, use:
+  - Database host: `database`
+  - Database name: valor de `MYSQL_DATABASE`
+  - Database user: valor de `MYSQL_USER`
+  - Database password: valor de `MYSQL_PASSWORD`
+  - Server path: `/var/www/server`
+- O estado do AAC fica no volume `myaac-data`, preservando `config.local.php`, cache, sessoes e imagens entre reinicios/redeploys.
 
 ## Atualizacao automatica do servidor
 Quando houver novo commit:
@@ -59,6 +65,7 @@ Quando houver novo commit:
 ## Comandos uteis (host)
 ```bash
 docker compose -f docker/docker-compose.portainer.yml logs -f otserver
+docker compose -f docker/docker-compose.portainer.yml logs -f myaac
 docker compose -f docker/docker-compose.portainer.yml ps
 docker compose -f docker/docker-compose.portainer.yml restart otserver
 ```
