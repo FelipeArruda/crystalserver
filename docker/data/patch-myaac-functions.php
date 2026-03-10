@@ -13,8 +13,17 @@ function getItemImage($id, $count = 1)
 {
 	$tooltip = '';
 	$fallback = 'images/items/empty.gif';
+	static $clientIdMap = null;
 
 	Items::load();
+	if($clientIdMap === null) {
+		$clientIdMapPath = '/myaac-data/item-client-id-map.php';
+		$clientIdMap = file_exists($clientIdMapPath) ? include $clientIdMapPath : [];
+		if(!is_array($clientIdMap)) {
+			$clientIdMap = [];
+		}
+	}
+
 	$name = getItemNameById($id);
 	if(!empty($name)) {
 		$tooltip = ' class="item_image" title="' . $name . '"';
@@ -46,6 +55,9 @@ function getItemImage($id, $count = 1)
 	}
 
 	$file_name = $id;
+	if(isset($clientIdMap[$id]) && $clientIdMap[$id] > 0) {
+		$file_name = $clientIdMap[$id];
+	}
 	if($count > 1)
 		$file_name .= '-' . $count;
 

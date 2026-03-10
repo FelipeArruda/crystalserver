@@ -4,6 +4,8 @@ set -eu
 DATA_DIR="/myaac-data"
 APP_DIR="/var/www/html"
 PATCH_THEME_CANARY="/opt/patch-theme-canary-characters.php"
+PATCH_THEME_CANARY_INDEX="/opt/patch-theme-canary-index.php"
+GENERATE_ITEM_CLIENT_ID_MAP="/opt/generate-item-client-id-map.php"
 
 mkdir -p \
 	"$DATA_DIR/system/cache" \
@@ -45,6 +47,14 @@ cp -an "$APP_DIR/plugins/." "$DATA_DIR/plugins/"
 
 if [ -f "$PATCH_THEME_CANARY" ]; then
 	php "$PATCH_THEME_CANARY"
+fi
+
+if [ -f "$PATCH_THEME_CANARY_INDEX" ]; then
+	php "$PATCH_THEME_CANARY_INDEX"
+fi
+
+if [ -f "$GENERATE_ITEM_CLIENT_ID_MAP" ]; then
+	php "$GENERATE_ITEM_CLIENT_ID_MAP"
 fi
 
 rm -rf "$APP_DIR/system/cache" \
