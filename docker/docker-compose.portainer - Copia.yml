@@ -4,11 +4,8 @@ services:
   database:
     image: mariadb:11
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    env_file:
+      - .env.dist
     volumes:
       - db-volume:/var/lib/mysql
     healthcheck:
@@ -17,16 +14,13 @@ services:
       timeout: 5s
       retries: 10
 
-  server-data-init:
-    image: busybox:1.36
-    restart: "no"
-    command: ["sh", "-c", "mkdir -p /data/server && chown -R 999:999 /data/server"]
-    volumes:
-      - server-data:/data/server
-
   otserver:
-    image: felipearruda/crystalserver:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.x86
     restart: unless-stopped
+    env_file:
+      - .env.dist
     environment:
       OT_DB_HOST: database
       OT_DB_PORT: 3306
@@ -42,36 +36,39 @@ services:
     ports:
       - "${statusProtocolPort:-7171}:7171"
       - "${gameProtocolPort:-7172}:7172"
-    volumes:
-      - server-data:/data/server
     depends_on:
       database:
         condition: service_healthy
-      server-data-init:
-        condition: service_completed_successfully
 
-  myaac:
+  login:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.myaac
-      args:
-        MYAAC_VERSION: "${MYAAC_VERSION:-}"
-        MYAAC_REF: "${MYAAC_REF:-develop}"
+      dockerfile: docker/Dockerfile.login
     restart: unless-stopped
+    env_file:
+      - .env.dist
     environment:
-      MYAAC_INSTALL_ALLOWED_IPS: "${MYAAC_INSTALL_ALLOWED_IPS:-}"
-    ports:
-      - "${MYAAC_HTTP_PORT:-80}:80"
+      MYSQL_HOST: database
+      MYSQL_PORT: 3306
+      MYSQL_DBNAME: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASS: "${MYSQL_PASSWORD}"
+      SERVER_NAME: "${SERVER_NAME:-crystalserver}"
+      SERVER_IP: "${SERVER_IP:-127.0.0.1}"
+      SERVER_PORT: "${gameProtocolPort:-7172}"
+      SERVER_LOCATION: "${SERVER_LOCATION:-BRA}"
+      RATE_LIMITER_RATE: "${RATE_LIMITER_RATE:-2}"
+      RATE_LIMITER_BURST: "${RATE_LIMITER_BURST:-5}"
     volumes:
-      - myaac-data:/myaac-data
-      - server-data:/var/www/server:ro
+      - "../config.lua.dist:/config.lua:ro"
+    ports:
+      - "${LOGIN_HTTP_PORT:-80}:80"
+      - "${LOGIN_GRPC_PORT:-9090}:9090"
     depends_on:
       database:
         condition: service_healthy
-      server-data-init:
-        condition: service_completed_successfully
+      otserver:
+        condition: service_started
 
 volumes:
   db-volume:
-  myaac-data:
-  server-data:
