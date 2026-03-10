@@ -31,7 +31,7 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 7. Clique em `Deploy the stack`.
 
 ## O que acontece no primeiro deploy
-- O servico `otserver` faz build da imagem com `docker/Dockerfile.x86`.
+- O servico `otserver` faz build da imagem local com `docker/Dockerfile.x86`.
 - O banco `mariadb` sobe primeiro.
 - O `start.sh` do servidor cria/importa schema automaticamente se necessario.
 - O servico `myaac` baixa a release configurada em `MYAAC_VERSION` e publica a AAC em Apache/PHP.
