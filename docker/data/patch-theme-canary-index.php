@@ -18,7 +18,19 @@ $replace = '<img id="Boss" src="<?= setting(\'core.item_images_url\') ?><?= $bos
 
 $updated = preg_replace($pattern, $replace, $contents, 1);
 
-if (!is_string($updated) || $updated === $contents) {
+if (!is_string($updated)) {
+	fwrite(STDERR, "Unable to patch boss image block in {$path}\n");
+	exit(1);
+}
+
+$templateSelectorSearch = <<<'PHP'
+					if ($config['template_allow_change'])
+						echo '<span style="color: white">Template:</span><br/>' . template_form();
+PHP;
+
+$updated = str_replace($templateSelectorSearch, '', $updated);
+
+if ($updated === $contents) {
 	exit(0);
 }
 
