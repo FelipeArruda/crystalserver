@@ -5,7 +5,8 @@
 	This script works with TFS 1.3+, otservbr-global and canary
 	Source:
 	https://raw.githubusercontent.com/slawkens/myaac-plugins/master/gesior-shop-system/plugins/gesior-shop-system/lua/gesior-shop-system-revscript.lua
-]]--
+]]
+--
 
 local messageType = MESSAGE_EVENT_ADVANCE
 
