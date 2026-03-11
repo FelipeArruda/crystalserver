@@ -22,6 +22,8 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 - Portas liberadas: `7171`, `7172` e `80` (ou a porta definida em `MYAAC_HTTP_PORT`).
 
 ## Passo a passo (Portainer)
+Use este fluxo como padrao para producao e para o primeiro teste no Portainer. Ele sobe `database`, `otserver` e `myaac` na mesma stack, com nomes internos estaveis (`database` e `otserver`) e sem depender de IP interno de container ou sincronizacao manual no MyAAC.
+
 1. No repositorio, copie o arquivo de ambiente:
    ```bash
    cd docker
@@ -41,6 +43,8 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 7. Clique em `Deploy the stack`.
 
 ## Stacks separadas no Portainer
+Use stacks separadas apenas se voce realmente precisar operar cada servico de forma independente. Esse modo exige mais cuidado com rede externa compartilhada, volumes nomeados e estado persistido no MyAAC.
+
 Se quiser subir cada servico em uma stack independente, use os tres arquivos abaixo com exatamente as mesmas variaveis de ambiente:
 
 1. Stack do banco:

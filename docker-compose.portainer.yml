@@ -11,6 +11,10 @@ services:
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     volumes:
       - db-volume:/var/lib/mysql
+    networks:
+      shared:
+        aliases:
+          - "${OT_DB_HOST:-database}"
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect"]
       interval: 10s
@@ -23,6 +27,8 @@ services:
     command: ["sh", "-c", "mkdir -p /data/server && chown -R 999:999 /data/server"]
     volumes:
       - server-data:/data/server
+    networks:
+      - shared
 
   otserver:
     image: "${OTSERVER_IMAGE:-felipearruda/crystalserver:latest}"
@@ -45,6 +51,10 @@ services:
       - "${gameProtocolPort:-7172}:7172"
     volumes:
       - server-data:/data/server
+    networks:
+      shared:
+        aliases:
+          - otserver
     depends_on:
       database:
         condition: service_healthy
@@ -68,13 +78,24 @@ services:
     volumes:
       - myaac-data:/myaac-data
       - server-data:/var/www/server:ro
+    networks:
+      - shared
     depends_on:
       database:
         condition: service_healthy
+      otserver:
+        condition: service_started
       server-data-init:
         condition: service_completed_successfully
 
 volumes:
   db-volume:
+    name: "${DB_VOLUME_NAME:-crystalserver-db}"
   myaac-data:
+    name: "${MYAAC_VOLUME_NAME:-crystalserver-myaac}"
   server-data:
+    name: "${SERVER_DATA_VOLUME_NAME:-crystalserver-server-data}"
+
+networks:
+  shared:
+    name: "${SHARED_NETWORK_NAME:-crystalserver-network}"
