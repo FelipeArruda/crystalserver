@@ -14,6 +14,39 @@ $queueTable = 'z_ots_comunication';
 $historyTable = 'z_shop_history';
 $allowedTypes = ['item', 'addon', 'mount'];
 
+function getShopTransactionParamLabels(string $type): array
+{
+	switch ($type) {
+		case 'addon':
+			return [
+				'param1' => 'Male outfit ID',
+				'param2' => 'Female outfit ID',
+				'param3' => 'Male addon bitmask',
+				'param4' => 'Female addon bitmask',
+				'param6' => 'Offer name',
+			];
+
+		case 'mount':
+			return [
+				'param1' => 'Mount ID',
+				'param2' => 'Unused',
+				'param3' => 'Unused',
+				'param4' => 'Unused',
+				'param6' => 'Offer name',
+			];
+
+		case 'item':
+		default:
+			return [
+				'param1' => 'Item ID',
+				'param2' => 'Amount',
+				'param3' => 'Unused',
+				'param4' => 'Unused',
+				'param6' => 'Offer name',
+			];
+	}
+}
+
 if (!$db->hasTable($queueTable)) {
 	echo '<div class="alert alert-warning">Table <strong>' . $queueTable . '</strong> was not found in the database.</div>';
 	return;
@@ -77,14 +110,13 @@ if (isset($_POST['delete_transaction'])) {
 
 		if ($db->hasTable($historyTable)) {
 			$historyStmt = $db->prepare(
-				"UPDATE `{$historyTable}`
-				 SET `trans_state` = 'deleted'
+				"DELETE FROM `{$historyTable}`
 				 WHERE `comunication_id` = :id AND `trans_state` <> 'realized'"
 			);
 			$historyStmt->execute([':id' => $id]);
 		}
 
-		success('Transaction removed from the pending queue.');
+		success('Transaction removed from the pending queue and from transaction history.');
 	}
 }
 
@@ -100,6 +132,8 @@ if ($editId > 0) {
 		warning('Selected transaction was not found. It may have already been delivered or removed.');
 	}
 }
+
+$editLabels = getShopTransactionParamLabels($editRow['param5'] ?? 'item');
 
 $query = "
 	SELECT q.`id`, q.`name`, q.`param1`, q.`param2`, q.`param3`, q.`param4`, q.`param5`, q.`param6`";
@@ -163,28 +197,28 @@ $rows = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
 						<div class="form-row row">
 							<div class="form-group col-md-6">
-								<label>Param1</label>
+								<label><?php echo $editLabels['param1']; ?></label>
 								<input class="form-control" type="number" name="param1" value="<?php echo (int) $editRow['param1']; ?>" required>
 							</div>
 							<div class="form-group col-md-6">
-								<label>Param2</label>
+								<label><?php echo $editLabels['param2']; ?></label>
 								<input class="form-control" type="number" name="param2" value="<?php echo (int) $editRow['param2']; ?>" required>
 							</div>
 						</div>
 
 						<div class="form-row row">
 							<div class="form-group col-md-6">
-								<label>Param3</label>
+								<label><?php echo $editLabels['param3']; ?></label>
 								<input class="form-control" type="number" name="param3" value="<?php echo (int) $editRow['param3']; ?>">
 							</div>
 							<div class="form-group col-md-6">
-								<label>Param4</label>
+								<label><?php echo $editLabels['param4']; ?></label>
 								<input class="form-control" type="number" name="param4" value="<?php echo (int) $editRow['param4']; ?>">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label>Offer name</label>
+							<label><?php echo $editLabels['param6']; ?></label>
 							<input class="form-control" type="text" name="param6" maxlength="255" value="<?php echo escapeHtml($editRow['param6']); ?>">
 						</div>
 
@@ -229,16 +263,17 @@ $rows = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 							</thead>
 							<tbody>
 							<?php foreach ($rows as $row): ?>
+								<?php $labels = getShopTransactionParamLabels((string) $row['param5']); ?>
 								<tr>
 									<td><?php echo (int) $row['id']; ?></td>
 									<td><?php echo escapeHtml($row['name']); ?></td>
 									<td><?php echo escapeHtml($row['param5']); ?></td>
 									<td>
 										<small>
-											p1=<?php echo (int) $row['param1']; ?><br>
-											p2=<?php echo (int) $row['param2']; ?><br>
-											p3=<?php echo (int) $row['param3']; ?><br>
-											p4=<?php echo (int) $row['param4']; ?>
+											<?php echo $labels['param1']; ?>: <?php echo (int) $row['param1']; ?><br>
+											<?php echo $labels['param2']; ?>: <?php echo (int) $row['param2']; ?><br>
+											<?php echo $labels['param3']; ?>: <?php echo (int) $row['param3']; ?><br>
+											<?php echo $labels['param4']; ?>: <?php echo (int) $row['param4']; ?>
 										</small>
 									</td>
 									<td><?php echo escapeHtml((string) $row['param6']); ?></td>

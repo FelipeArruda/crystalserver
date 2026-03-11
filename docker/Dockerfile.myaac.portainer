@@ -3,6 +3,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY data/myaac-overrides/ /opt/myaac-overrides/
 COPY data/configure-myaac-status.php /opt/configure-myaac-status.php
 COPY data/configure-myaac-admin-menu.php /opt/configure-myaac-admin-menu.php
+COPY data/patch-gesior-shop-system.php /opt/patch-gesior-shop-system.php
 COPY data/patch-myaac-functions.php /opt/patch-myaac-functions.php
 COPY data/patch-myaac-settings.php /opt/patch-myaac-settings.php
 COPY data/patch-theme-canary-characters.php /opt/patch-theme-canary-characters.php

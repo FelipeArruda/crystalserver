@@ -111,4 +111,8 @@ if [ -f /opt/configure-myaac-admin-menu.php ]; then
 	php /opt/configure-myaac-admin-menu.php || true
 fi
 
+if [ -f /opt/patch-gesior-shop-system.php ]; then
+	php /opt/patch-gesior-shop-system.php || true
+fi
+
 exec docker-php-entrypoint "$@"
