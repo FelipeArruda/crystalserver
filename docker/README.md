@@ -3,12 +3,22 @@
 Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 
 ## Arquivos deste fluxo
-- `docker/docker-compose.portainer.yml`: stack unica para Portainer.
-- `docker/docker-compose.portainer.database.yml`: stack separada do MariaDB.
-- `docker/docker-compose.portainer.otserver.yml`: stack separada do OTServer.
-- `docker/docker-compose.portainer.myaac.yml`: stack separada do MyAAC.
+- `docker/`: fonte de verdade dos arquivos Docker, Dockerfiles e assets.
+- `docker/docker-compose.portainer.yml`: stack unica para uso direto a partir da pasta `docker`.
+- `docker/docker-compose.portainer.database.yml`: stack separada do MariaDB para uso direto a partir da pasta `docker`.
+- `docker/docker-compose.portainer.otserver.yml`: stack separada do OTServer para uso direto a partir da pasta `docker`.
+- `docker/docker-compose.portainer.myaac.yml`: stack separada do MyAAC para uso direto a partir da pasta `docker`.
+- `docker-compose.portainer.yml`: wrapper na raiz para Portainer em modo `Repository`.
+- `docker-compose.portainer.database.yml`: wrapper na raiz para Portainer em modo `Repository`.
+- `docker-compose.portainer.otserver.yml`: wrapper na raiz para Portainer em modo `Repository`.
+- `docker-compose.portainer.myaac.yml`: wrapper na raiz para Portainer em modo `Repository`.
 - `docker/.env.portainer.dist`: variaveis de ambiente de exemplo.
 - `docker/Dockerfile.x86`: build da aplicacao em Ubuntu 24.04.
+
+## Organizacao recomendada
+- Mantenha implementacao, Dockerfiles e assets dentro de `docker/`.
+- Use os arquivos da raiz apenas como wrappers para o Portainer quando o deploy for feito por `Repository`.
+- Isso evita erro de resolucao de `build context` no Portainer e preserva a organizacao centralizada em `docker/`.
 
 ## Pre-requisitos
 - Host Ubuntu 24.04 com Docker e Portainer instalados.
@@ -29,7 +39,7 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 4. Va em `Stacks` -> `Add stack`.
 5. Selecione `Repository` (Git) e informe:
    - Repository URL: URL deste projeto
-   - Compose path: `docker/docker-compose.portainer.yml`
+   - Compose path: `docker-compose.portainer.yml`
 6. Em `Environment variables`, confirme/override variaveis do `.env` se necessario.
 7. Clique em `Deploy the stack`.
 
@@ -37,11 +47,11 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 Se quiser subir cada servico em uma stack independente, use os tres arquivos abaixo com exatamente as mesmas variaveis de ambiente:
 
 1. Stack do banco:
-   - Compose path: `docker/docker-compose.portainer.database.yml`
+   - Compose path: `docker-compose.portainer.database.yml`
 2. Stack do servidor:
-   - Compose path: `docker/docker-compose.portainer.otserver.yml`
+   - Compose path: `docker-compose.portainer.otserver.yml`
 3. Stack do site:
-   - Compose path: `docker/docker-compose.portainer.myaac.yml`
+   - Compose path: `docker-compose.portainer.myaac.yml`
 
 Para essas stacks se enxergarem, todas precisam usar os mesmos valores de:
 - `SHARED_NETWORK_NAME`
