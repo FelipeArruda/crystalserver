@@ -109,6 +109,21 @@ function themeCanaryCalculateFreeCapacity(OTS_Player $player, $db): int
 }
 PHP;
 
+$accountStatusHelper = <<<'PHP'
+function themeCanaryResolveAccountStatus(OTS_Account $account, array $config): string
+{
+	$premDays = $account->getPremDays();
+	$freePremium = (isset($config['lua']['freePremium']) && getBoolean($config['lua']['freePremium']))
+		|| $premDays == OTS_Account::GRATIS_PREMIUM_DAYS;
+
+	if ($freePremium || $account->isPremium()) {
+		return '<b><span style="color: green">Premium Account</span></b>';
+	}
+
+	return '<b><span style="color: red">Free Account</span></b>';
+}
+PHP;
+
 if (strpos($updated, 'function themeCanaryCalculateFreeCapacity(') !== false) {
 	$helperPattern = '/function themeCanaryCalculateFreeCapacity\(OTS_Player \$player, \$db\): int\s*\{.*?\n\}\n\n\$player = new OTS_Player\(\);/s';
 	$patched = preg_replace($helperPattern, $capacityHelper . "\n\n\$player = new OTS_Player();", $updated, 1);
@@ -125,10 +140,51 @@ else {
 	}
 }
 
+if (strpos($updated, 'function themeCanaryResolveAccountStatus(') !== false) {
+	$helperPattern = '/function themeCanaryResolveAccountStatus\(OTS_Account \$account, array \$config\): string\s*\{.*?\n\}\n\n\$player = new OTS_Player\(\);/s';
+	$patched = preg_replace($helperPattern, $accountStatusHelper . "\n\n\$player = new OTS_Player();", $updated, 1);
+	if (is_string($patched)) {
+		$updated = $patched;
+	}
+}
+else {
+	$search = "\$player = new OTS_Player();";
+	$replacement = "{$accountStatusHelper}\n\n\$player = new OTS_Player();";
+	$patched = str_replace($search, $replacement, $updated, $count);
+	if ($count > 0 && is_string($patched)) {
+		$updated = $patched;
+	}
+}
+
 if (strpos($updated, '$player_cap = themeCanaryCalculateFreeCapacity($player, $db);') === false) {
 	$patched = str_replace(
 		'$player_cap = $player->getCap();',
 		'$player_cap = themeCanaryCalculateFreeCapacity($player, $db);',
+		$updated,
+		$count
+	);
+	if ($count > 0) {
+		$updated = $patched;
+	}
+}
+
+if (strpos($updated, '$account_status = themeCanaryResolveAccountStatus($account, $config);') === false) {
+	$patched = preg_replace(
+		'/(\$account = \$player->getAccount\(\);\s*\n)(\s*\$rows = 0;)/',
+		"$1\t\t\$account_status = themeCanaryResolveAccountStatus(\$account, \$config);\n$2",
+		$updated,
+		1,
+		$count
+	);
+	if ($count > 0 && is_string($patched)) {
+		$updated = $patched;
+	}
+}
+
+if (strpos($updated, "'account_status' => \$account_status") === false) {
+	$patched = str_replace(
+		"\t\t'canEdit' => hasFlag(FLAG_CONTENT_PLAYERS) || superAdmin(),\n\t\t'vip_enabled' => isVipSystemEnabled()",
+		"\t\t'canEdit' => hasFlag(FLAG_CONTENT_PLAYERS) || superAdmin(),\n\t\t'account_status' => \$account_status,\n\t\t'vip_enabled' => isVipSystemEnabled()",
 		$updated,
 		$count
 	);
@@ -170,6 +226,36 @@ if (file_exists($twigPath)) {
 		$capNewLine,
 		$twigUpdated,
 		$capCount
+	);
+
+	$accountStatusOldBlock = <<<'TWIG'
+                            <td>
+                              {% if vip_enabled %}
+                                VIP
+                                {% if account.isPremium() %}
+                                  <strong
+                                    style="color:green">actived</strong> until {{ account.getExpirePremiumTime()|date("j M Y, H:i") }}
+                                {% else %}
+                                  <strong style="color:red">desactivated</strong>
+                                {% endif %}
+                              {% else %}
+                                {% if account.isPremium() %}
+                                  <font color="green"><b>Premium Account</b></font>
+                                {% else %}
+                                  <font color="red">Free Account</font>
+                                {% endif %}
+                              {% endif %}
+                            </td>
+TWIG;
+	$accountStatusNewBlock = <<<'TWIG'
+                            <td>{{ account_status|raw }}</td>
+TWIG;
+
+	$twigUpdated = str_replace(
+		$accountStatusOldBlock,
+		$accountStatusNewBlock,
+		$twigUpdated,
+		$accountStatusCount
 	);
 
 	if (is_string($twigUpdated) && $twigUpdated !== $twigContents) {
