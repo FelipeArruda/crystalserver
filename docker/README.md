@@ -13,12 +13,13 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 - `docker-compose.portainer.otserver.yml`: wrapper na raiz para Portainer em modo `Repository`.
 - `docker-compose.portainer.myaac.yml`: wrapper na raiz para Portainer em modo `Repository`.
 - `docker/.env.portainer.dist`: variaveis de ambiente de exemplo.
-- `docker/Dockerfile.x86`: build da aplicacao em Ubuntu 24.04.
+- `docker/Dockerfile.x86`: definicao da imagem do OTServer usada pela pipeline CI/CD.
 
 ## Organizacao recomendada
 - Mantenha implementacao, Dockerfiles e assets dentro de `docker/`.
 - Use os arquivos da raiz apenas como wrappers para o Portainer quando o deploy for feito por `Repository`.
 - Isso evita erro de resolucao de `build context` no Portainer e preserva a organizacao centralizada em `docker/`.
+- O deploy no Portainer usa imagem pronta do `otserver`; o build da imagem fica a cargo da pipeline CI/CD.
 
 ## Pre-requisitos
 - Host Ubuntu 24.04 com Docker e Portainer instalados.
@@ -66,7 +67,7 @@ Ordem recomendada de deploy:
 3. `myaac`
 
 ## O que acontece no primeiro deploy
-- O servico `otserver` faz build da imagem local com `docker/Dockerfile.x86`.
+- O servico `otserver` baixa a imagem configurada em `OTSERVER_IMAGE`.
 - O banco `mariadb` sobe primeiro.
 - O `start.sh` do servidor cria/importa schema automaticamente se necessario.
 - O servico `myaac` baixa a release configurada em `MYAAC_VERSION` e publica a AAC em Apache/PHP.
@@ -95,8 +96,9 @@ Ordem recomendada de deploy:
 
 ## Atualizacao automatica do servidor
 Quando houver novo commit:
-1. `Stacks` -> `crystalserver` -> `Pull and redeploy` (ou `Update the stack` com rebuild).
-2. O Portainer recompila e reinicia os containers mantendo o volume `db-volume`.
+1. Garanta que a pipeline publicou a nova imagem em `OTSERVER_IMAGE`.
+2. `Stacks` -> `crystalserver` -> `Pull and redeploy` (ou `Update the stack`).
+3. O Portainer baixa a imagem mais recente e reinicia os containers mantendo o volume `db-volume`.
 
 ## Comandos uteis (host)
 ```bash

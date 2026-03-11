@@ -9,10 +9,8 @@ services:
       - server-data:/data/server
 
   otserver:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.x86
-    image: crystalserver-otserver:local
+    image: "${OTSERVER_IMAGE:-felipearruda/crystalserver:latest}"
+    pull_policy: always
     restart: unless-stopped
     environment:
       OT_DB_HOST: "${OT_DB_HOST:-database}"
