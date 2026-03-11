@@ -1,11 +1,11 @@
 FROM php:8.3-apache
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-COPY data/myaac-overrides/ /opt/myaac-overrides/
-COPY data/patch-myaac-functions.php /opt/patch-myaac-functions.php
-COPY data/patch-myaac-settings.php /opt/patch-myaac-settings.php
-COPY data/patch-theme-canary-characters.php /opt/patch-theme-canary-characters.php
-COPY data/patch-theme-canary-index.php /opt/patch-theme-canary-index.php
-COPY data/generate-item-client-id-map.php /opt/generate-item-client-id-map.php
+COPY docker/data/myaac-overrides/ /opt/myaac-overrides/
+COPY docker/data/patch-myaac-functions.php /opt/patch-myaac-functions.php
+COPY docker/data/patch-myaac-settings.php /opt/patch-myaac-settings.php
+COPY docker/data/patch-theme-canary-characters.php /opt/patch-theme-canary-characters.php
+COPY docker/data/patch-theme-canary-index.php /opt/patch-theme-canary-index.php
+COPY docker/data/generate-item-client-id-map.php /opt/generate-item-client-id-map.php
 
 ARG MYAAC_VERSION=
 ARG MYAAC_REF=develop
@@ -47,8 +47,8 @@ RUN set -eux; \
 	cp /var/www/html/.htaccess.dist /var/www/html/.htaccess; \
 	rm -f /tmp/myaac.tar.gz
 
-COPY data/myaac-entrypoint.sh /usr/local/bin/myaac-entrypoint.sh
-COPY data/myaac-php.ini /usr/local/etc/php/conf.d/myaac.ini
+COPY docker/data/myaac-entrypoint.sh /usr/local/bin/myaac-entrypoint.sh
+COPY docker/data/myaac-php.ini /usr/local/etc/php/conf.d/myaac.ini
 
 RUN chmod +x /usr/local/bin/myaac-entrypoint.sh \
 	&& mkdir -p /myaac-data

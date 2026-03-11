@@ -61,8 +61,8 @@ services:
 
   myaac:
     build:
-      context: .
-      dockerfile: Dockerfile.myaac.portainer
+      context: ..
+      dockerfile: docker/Dockerfile.myaac.portainer
       args:
         MYAAC_VERSION: "${MYAAC_VERSION:-}"
         MYAAC_REF: "${MYAAC_REF:-develop}"
