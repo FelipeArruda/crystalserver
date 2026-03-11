@@ -1,0 +1,30 @@
+name: crystalserver-database
+
+services:
+  database:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    volumes:
+      - db-volume:/var/lib/mysql
+    networks:
+      shared:
+        aliases:
+          - "${OT_DB_HOST:-database}"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db-volume:
+    name: "${DB_VOLUME_NAME:-crystalserver-db}"
+
+networks:
+  shared:
+    name: "${SHARED_NETWORK_NAME:-crystalserver-network}"
