@@ -1,6 +1,7 @@
 FROM php:8.3-apache
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY data/myaac-overrides/ /opt/myaac-overrides/
+COPY data/configure-myaac-status.php /opt/configure-myaac-status.php
 COPY data/patch-myaac-functions.php /opt/patch-myaac-functions.php
 COPY data/patch-myaac-settings.php /opt/patch-myaac-settings.php
 COPY data/patch-theme-canary-characters.php /opt/patch-theme-canary-characters.php

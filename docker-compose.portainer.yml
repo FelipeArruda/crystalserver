@@ -61,6 +61,8 @@ services:
     restart: unless-stopped
     environment:
       MYAAC_INSTALL_ALLOWED_IPS: "${MYAAC_INSTALL_ALLOWED_IPS:-}"
+      MYAAC_STATUS_HOST: "${MYAAC_STATUS_HOST:-otserver}"
+      MYAAC_STATUS_PORT: "${MYAAC_STATUS_PORT:-7171}"
     ports:
       - "${MYAAC_HTTP_PORT:-80}:80"
     volumes:

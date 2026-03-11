@@ -12,10 +12,12 @@ $updated = str_replace(
 	[
 		"'default' => 'https://item-images.ots.me/1092/',",
 		"'default' => '.gif',",
+		"'default' => '127.0.0.1',",
 	],
 	[
 		"'default' => 'https://item-images.ots.me/latest_otbr/',",
 		"'default' => '.png',",
+		"'default' => 'otserver',",
 	],
 	$contents
 );
