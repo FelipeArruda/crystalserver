@@ -107,4 +107,8 @@ if [ -f /opt/configure-myaac-status.php ]; then
 	php /opt/configure-myaac-status.php || true
 fi
 
+if [ -f /opt/configure-myaac-admin-menu.php ]; then
+	php /opt/configure-myaac-admin-menu.php || true
+fi
+
 exec docker-php-entrypoint "$@"
