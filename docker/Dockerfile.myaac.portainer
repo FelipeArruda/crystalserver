@@ -1,0 +1,57 @@
+FROM php:8.3-apache
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+COPY data/myaac-overrides/ /opt/myaac-overrides/
+COPY data/patch-myaac-functions.php /opt/patch-myaac-functions.php
+COPY data/patch-myaac-settings.php /opt/patch-myaac-settings.php
+COPY data/patch-theme-canary-characters.php /opt/patch-theme-canary-characters.php
+COPY data/patch-theme-canary-index.php /opt/patch-theme-canary-index.php
+COPY data/generate-item-client-id-map.php /opt/generate-item-client-id-map.php
+
+ARG MYAAC_VERSION=
+ARG MYAAC_REF=develop
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		ca-certificates \
+		curl \
+		libfreetype6-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+		libxml2-dev \
+		libzip-dev \
+		tar \
+		gzip \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
+	&& docker-php-ext-install -j"$(nproc)" pdo_mysql gd zip bcmath \
+	&& a2enmod rewrite headers \
+	&& sed -ri '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
+	&& rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+	if [ -n "$MYAAC_VERSION" ]; then \
+		MYAAC_URL="https://github.com/slawkens/myaac/releases/download/v${MYAAC_VERSION}/myaac-${MYAAC_VERSION}.tar.gz"; \
+	else \
+		MYAAC_URL="https://github.com/slawkens/myaac/archive/refs/heads/${MYAAC_REF}.tar.gz"; \
+	fi; \
+	curl -fsSL -o /tmp/myaac.tar.gz "$MYAAC_URL"; \
+	rm -rf /var/www/html/*; \
+	tar -xzf /tmp/myaac.tar.gz -C /var/www/html --strip-components=1; \
+	php /opt/patch-myaac-functions.php; \
+	php /opt/patch-myaac-settings.php; \
+	if [ -d /opt/myaac-overrides ]; then \
+		cp -R /opt/myaac-overrides/* /var/www/html/; \
+	fi; \
+	if [ -f /var/www/html/composer.lock ]; then \
+		composer install --working-dir=/var/www/html --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader; \
+	fi; \
+	cp /var/www/html/.htaccess.dist /var/www/html/.htaccess; \
+	rm -f /tmp/myaac.tar.gz
+
+COPY data/myaac-entrypoint.sh /usr/local/bin/myaac-entrypoint.sh
+COPY data/myaac-php.ini /usr/local/etc/php/conf.d/myaac.ini
+
+RUN chmod +x /usr/local/bin/myaac-entrypoint.sh \
+	&& mkdir -p /myaac-data
+
+ENTRYPOINT ["myaac-entrypoint.sh"]
+CMD ["apache2-foreground"]
