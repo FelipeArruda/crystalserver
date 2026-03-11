@@ -50,7 +50,8 @@ RUN set -eux; \
 COPY data/myaac-entrypoint.sh /usr/local/bin/myaac-entrypoint.sh
 COPY data/myaac-php.ini /usr/local/etc/php/conf.d/myaac.ini
 
-RUN chmod +x /usr/local/bin/myaac-entrypoint.sh \
+RUN sed -i 's/\r$//' /usr/local/bin/myaac-entrypoint.sh \
+	&& chmod +x /usr/local/bin/myaac-entrypoint.sh \
 	&& mkdir -p /myaac-data
 
 ENTRYPOINT ["myaac-entrypoint.sh"]
