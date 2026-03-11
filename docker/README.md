@@ -4,10 +4,6 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 
 ## Arquivos deste fluxo
 - `docker/`: fonte de verdade dos arquivos Docker, Dockerfiles e assets.
-- `docker/docker-compose.portainer.yml`: stack unica para uso direto a partir da pasta `docker`.
-- `docker/docker-compose.portainer.database.yml`: stack separada do MariaDB para uso direto a partir da pasta `docker`.
-- `docker/docker-compose.portainer.otserver.yml`: stack separada do OTServer para uso direto a partir da pasta `docker`.
-- `docker/docker-compose.portainer.myaac.yml`: stack separada do MyAAC para uso direto a partir da pasta `docker`.
 - `docker-compose.portainer.yml`: wrapper na raiz para Portainer em modo `Repository`.
 - `docker-compose.portainer.database.yml`: wrapper na raiz para Portainer em modo `Repository`.
 - `docker-compose.portainer.otserver.yml`: wrapper na raiz para Portainer em modo `Repository`.
@@ -17,7 +13,7 @@ Este guia prepara o OT Server para build e execucao via Portainer usando Docker.
 
 ## Organizacao recomendada
 - Mantenha implementacao, Dockerfiles e assets dentro de `docker/`.
-- Use os arquivos da raiz apenas como wrappers para o Portainer quando o deploy for feito por `Repository`.
+- Use os arquivos da raiz como unico ponto de entrada de compose para o Portainer quando o deploy for feito por `Repository`.
 - Isso evita erro de resolucao de `build context` no Portainer e preserva a organizacao centralizada em `docker/`.
 - O deploy no Portainer usa imagem pronta do `otserver`; o build da imagem fica a cargo da pipeline CI/CD.
 
@@ -102,8 +98,8 @@ Quando houver novo commit:
 
 ## Comandos uteis (host)
 ```bash
-docker compose -f docker/docker-compose.portainer.yml logs -f otserver
-docker compose -f docker/docker-compose.portainer.yml logs -f myaac
-docker compose -f docker/docker-compose.portainer.yml ps
-docker compose -f docker/docker-compose.portainer.yml restart otserver
+docker compose -f docker-compose.portainer.yml logs -f otserver
+docker compose -f docker-compose.portainer.yml logs -f myaac
+docker compose -f docker-compose.portainer.yml ps
+docker compose -f docker-compose.portainer.yml restart otserver
 ```
