@@ -26,7 +26,7 @@ services:
 
   otserver:
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile.x86
     image: crystalserver-otserver:local
     restart: unless-stopped
@@ -55,7 +55,7 @@ services:
 
   myaac:
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile.myaac
       args:
         MYAAC_VERSION: "${MYAAC_VERSION:-}"

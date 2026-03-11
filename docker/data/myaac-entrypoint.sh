@@ -90,4 +90,17 @@ chmod -R 775 \
 	"$DATA_DIR/images/gallery" \
 	"$DATA_DIR/plugins"
 
+php <<'PHP' || true
+<?php
+try {
+	require '/var/www/html/common.php';
+	require '/var/www/html/system/functions.php';
+	require '/var/www/html/system/init.php';
+	require '/var/www/html/system/migrate.php';
+	echo "MyAAC migrations checked.\n";
+} catch (Throwable $e) {
+	fwrite(STDERR, "Skipping MyAAC migrations: " . $e->getMessage() . PHP_EOL);
+}
+PHP
+
 exec docker-php-entrypoint "$@"
